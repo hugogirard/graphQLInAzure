@@ -6,6 +6,11 @@ param publisherEmail string
 @secure()
 param publisherName string
 
+@secure()
+param administratorLogin string
+@secure()
+param administratorLoginPassword string
+
 var rgName = 'rg-graphql-demo'
 var suffix = uniqueString(rgGroup.id)
 
@@ -15,7 +20,7 @@ resource rgGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 module apim 'modules/apim/apim.bicep' = {
-  scope:  resourceGroup(rgGroup.name)
+  scope: resourceGroup(rgGroup.name)
   name: 'apim'
   params: {
     location: location 
@@ -24,3 +29,25 @@ module apim 'modules/apim/apim.bicep' = {
     suffix: suffix
   }
 }
+
+module sql 'modules/sql/sql.bicep' = {
+  scope: resourceGroup(rgGroup.name)
+  name: 'sql'
+  params: {
+    administratorLogin: administratorLogin
+    administratorLoginPassword: administratorLoginPassword
+    location: location
+    suffix: suffix
+  }
+}
+
+module web 'modules/webapp/webapp.bicep' = {
+  scope: resourceGroup(rgGroup.name)
+  name: 'web'
+  params: {
+    location: location
+    suffix: suffix
+  }
+}
+
+
