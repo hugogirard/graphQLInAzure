@@ -3,7 +3,7 @@
 public class Affiliation
 {
     [Key]
-    public short Id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(100)]

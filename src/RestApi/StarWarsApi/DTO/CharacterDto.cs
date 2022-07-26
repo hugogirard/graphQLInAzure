@@ -1,4 +1,4 @@
-﻿namespace StarWarsApi.Result
+﻿namespace StarWarsApi.DTO
 {
     public class CharacterDto
     {
