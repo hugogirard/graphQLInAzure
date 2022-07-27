@@ -11,7 +11,7 @@ public class ShipController
         _repository = context;
     }
 
-    [HttpGet(Name = "GetAllPlanet")]
+    [HttpGet(Name = "GetAllShips")]
     public async Task<IEnumerable<BaseEntityDto>> Get()
     {
         return await _repository.Ships
