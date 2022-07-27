@@ -14,6 +14,13 @@ public class DataSeeder
     public void Seed() 
     {
         _context.Database.EnsureCreated();
+
+        // This mean the database is already seeded
+        if (_context.Characters.Any()) 
+        {
+            return;
+        }
+
         CreatePlanet();
         CreateAffiliation();
         CreateShip();

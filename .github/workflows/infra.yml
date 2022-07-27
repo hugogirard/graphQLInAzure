@@ -1,0 +1,72 @@
+name: Create Azure Resources
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "bicep/**/**"
+      - ".github/workflows/infra.yml"
+  workflow_dispatch:    
+
+jobs:
+  create-azure-resources:
+
+    env:
+      DEPLOYMENT_NAME: apim-deployment
+      LOCATION: 'eastus'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - uses: actions/checkout@v2
+
+      - name: Validate that bicep builds
+        run: az bicep build -f main.bicep
+        working-directory: ./bicep
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Convert to ARM
+        run: |
+          bicep build ./bicep/main.bicep 
+
+      - name: deploy
+        id: createResources
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          scope: subscription
+          region: ${{ env.LOCATION }}
+          deploymentName:  ${{ env.DEPLOYMENT_NAME }}
+          template: ./bicep/main.json
+          parameters: location=${{ env.LOCATION }} publisherEmail=${{ secrets.PUBLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }} administratorLogin=${{ secrets.ADMINISTRATOR_LOGIN }} administratorLoginPassword=${{ secrets.ADMINISTRATOR_PASSWORD }}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Star Wars Rest API Name
+        with:
+          name: STARWARS_REST_API_NAME
+          value: ${{ steps.createResources.outputs.webAppName }}
+          pa_token: ${{ secrets.PA_TOKEN }}          
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Sql Server Name
+        with:
+          name: SQLSERVER_NAME
+          value: ${{ steps.createResources.outputs.sqlServerName }}
+          pa_token: ${{ secrets.PA_TOKEN }}     
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Database Name
+        with:
+          name: DATABASE_NAME
+          value: ${{ steps.createResources.outputs.databaseName }}
+          pa_token: ${{ secrets.PA_TOKEN }}               
+                        
+
+
+    

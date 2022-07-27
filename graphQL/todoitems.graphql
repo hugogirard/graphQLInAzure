@@ -1,0 +1,20 @@
+type TodoItem {
+  id: ID!
+  title: string!
+  notes: string
+}
+
+type Query {
+  getAllTodoItems: [TodoItem!]!
+  getTodoItem(id: ID!): TodoItem
+}
+
+type Mutation {
+  createTodoItem(title: string!, notes: string): TodoItem
+  deleteTodoItem(id: ID!): void
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
