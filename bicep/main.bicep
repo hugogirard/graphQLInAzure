@@ -54,6 +54,13 @@ module web 'modules/webapp/webapp.bicep' = {
   }
 }
 
+module vnet 'modules/vnet/vnet.bicep' = {
+  scope: resourceGroup(rgGroup.name)
+  name: 'vnet'
+  params: {
+    location: location
+  }
+}
 
 output webAppName string = web.outputs.webAppName
 output sqlServerName string = sql.outputs.sqlServerName
