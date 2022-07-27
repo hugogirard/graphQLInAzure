@@ -52,3 +52,5 @@ module web 'modules/webapp/webapp.bicep' = {
 
 
 output webAppName string = web.outputs.webAppName
+output sqlServerName string = sql.outputs.sqlServerName
+output databaseName string = sql.outputs.databaseName

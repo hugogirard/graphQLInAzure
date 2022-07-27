@@ -53,6 +53,19 @@ jobs:
           value: ${{ steps.createResources.outputs.webAppName }}
           pa_token: ${{ secrets.PA_TOKEN }}          
 
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Sql Server Name
+        with:
+          name: SQLSERVER_NAME
+          value: ${{ steps.createResources.outputs.sqlServerName }}
+          pa_token: ${{ secrets.PA_TOKEN }}     
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Database Name
+        with:
+          name: DATABASE_NAME
+          value: ${{ steps.createResources.outputs.databaseName }}
+          pa_token: ${{ secrets.PA_TOKEN }}               
                         
 
 

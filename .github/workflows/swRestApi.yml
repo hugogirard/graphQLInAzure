@@ -35,6 +35,11 @@ jobs:
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
         working-directory: ${{ env.AZURE_REST_API_DIRECTORY }}          
 
+      - name: Seed database
+        run: |
+          cnxString='Server=tcp:${{ secrets.SQLSERVER_NAME }}.database.windows.net,1433;Initial Catalog=${{ secrets.DATABASE_NAME }};Persist Security Info=False;User ID=${{ secrets.ADMINISTRATOR_LOGIN }};Password=${{ secrets.ADMINISTRATOR_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+          dotnet run seeddata "Server=DESKTOP-I4VE6ON;Database=StarWarsDb;Trusted_Connection=True;"
+
       - name: Azure Login
         uses: Azure/login@v1
         with:

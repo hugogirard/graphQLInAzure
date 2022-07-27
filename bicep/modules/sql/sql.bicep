@@ -6,6 +6,7 @@ param administratorLogin string
 param administratorLoginPassword string
 
 var serverName = 'sqlsrv-${suffix}'
+var dbName = 'StarWarsDb'
 
 resource server 'Microsoft.Sql/servers@2019-06-01-preview' = {
   name: serverName
@@ -18,10 +19,13 @@ resource server 'Microsoft.Sql/servers@2019-06-01-preview' = {
 
 resource sqlStarWarsDB 'Microsoft.Sql/servers/databases@2020-08-01-preview' = {
   parent: server
-  name: 'StarWarsDb'
+  name: dbName
   location: location
   sku: {
     name: 'Standard'
     tier: 'Standard'
   }
 }
+
+output sqlServerName string = server.name
+output databaseName string = dbName
