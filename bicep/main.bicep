@@ -47,6 +47,10 @@ module web 'modules/webapp/webapp.bicep' = {
   params: {
     location: location
     suffix: suffix
+    administratorLogin: administratorLogin
+    administratorLoginPassword: administratorLoginPassword
+    databaseName: sql.outputs.databaseName
+    sqlServerName: sql.outputs.sqlServerName
   }
 }
 
