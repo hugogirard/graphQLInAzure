@@ -20,3 +20,5 @@ resource web 'Microsoft.Web/sites@2022-03-01' = {
     serverFarmId: appservice.id
   }
 }
+
+output webAppName string = web.name

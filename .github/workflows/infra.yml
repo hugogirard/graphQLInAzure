@@ -46,6 +46,13 @@ jobs:
           template: ./bicep/main.json
           parameters: location=${{ env.LOCATION }} publisherEmail=${{ secrets.PUBLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }} administratorLogin=${{ secrets.ADMINISTRATOR_LOGIN }} administratorLoginPassword=${{ secrets.ADMINISTRATOR_PASSWORD }}
 
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Star Wars Rest API Name
+        with:
+          name: STARWARS_REST_API_NAME
+          value: ${{ steps.createResources.outputs.webAppName }}
+          pa_token: ${{ secrets.PA_TOKEN }}          
+
                         
 
 
